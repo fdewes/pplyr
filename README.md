@@ -10,7 +10,7 @@
 
 # pplyr
 
-> use the R dplyr package with python
+> pplyr lets you use dplyrs grammar of data manipulation from within python without any code changes.
 
 
 ## Install
@@ -19,11 +19,11 @@
 
 ## How to use
 
-Create a dplyr command and call pplyr(df, cmd):
+Create a dplyr command and call pplyr(df, dplyr_code):
 <div class="codecell" markdown="1">
 <div class="input_area" markdown="1">
 
-```
+```python
 df = pd.read_csv("iris.csv", index_col=0)
 print(df)
 ```
@@ -31,128 +31,20 @@ print(df)
 </div>
 <div class="output_area" markdown="1">
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Sepal.Length</th>
-      <th>Sepal.Width</th>
-      <th>Petal.Length</th>
-      <th>Petal.Width</th>
-      <th>Species</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>5.1</td>
-      <td>3.5</td>
-      <td>1.4</td>
-      <td>0.2</td>
-      <td>setosa</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>4.9</td>
-      <td>3.0</td>
-      <td>1.4</td>
-      <td>0.2</td>
-      <td>setosa</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>4.7</td>
-      <td>3.2</td>
-      <td>1.3</td>
-      <td>0.2</td>
-      <td>setosa</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>4.6</td>
-      <td>3.1</td>
-      <td>1.5</td>
-      <td>0.2</td>
-      <td>setosa</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>5.0</td>
-      <td>3.6</td>
-      <td>1.4</td>
-      <td>0.2</td>
-      <td>setosa</td>
-    </tr>
-    <tr>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <td>146</td>
-      <td>6.7</td>
-      <td>3.0</td>
-      <td>5.2</td>
-      <td>2.3</td>
-      <td>virginica</td>
-    </tr>
-    <tr>
-      <td>147</td>
-      <td>6.3</td>
-      <td>2.5</td>
-      <td>5.0</td>
-      <td>1.9</td>
-      <td>virginica</td>
-    </tr>
-    <tr>
-      <td>148</td>
-      <td>6.5</td>
-      <td>3.0</td>
-      <td>5.2</td>
-      <td>2.0</td>
-      <td>virginica</td>
-    </tr>
-    <tr>
-      <td>149</td>
-      <td>6.2</td>
-      <td>3.4</td>
-      <td>5.4</td>
-      <td>2.3</td>
-      <td>virginica</td>
-    </tr>
-    <tr>
-      <td>150</td>
-      <td>5.9</td>
-      <td>3.0</td>
-      <td>5.1</td>
-      <td>1.8</td>
-      <td>virginica</td>
-    </tr>
-  </tbody>
-</table>
-<p>150 rows × 5 columns</p>
-</div>
-
+         Sepal.Length  Sepal.Width  Petal.Length  Petal.Width    Species
+    1             5.1          3.5           1.4          0.2     setosa
+    2             4.9          3.0           1.4          0.2     setosa
+    3             4.7          3.2           1.3          0.2     setosa
+    4             4.6          3.1           1.5          0.2     setosa
+    5             5.0          3.6           1.4          0.2     setosa
+    ..            ...          ...           ...          ...        ...
+    146           6.7          3.0           5.2          2.3  virginica
+    147           6.3          2.5           5.0          1.9  virginica
+    148           6.5          3.0           5.2          2.0  virginica
+    149           6.2          3.4           5.4          2.3  virginica
+    150           5.9          3.0           5.1          1.8  virginica
+    
+    [150 rows x 5 columns]
 
 
 </div>
@@ -161,391 +53,29 @@ print(df)
 <div class="codecell" markdown="1">
 <div class="input_area" markdown="1">
 
-```
-cmd = """
-df %>% group_by(Sepal.Length, Species) %>% summarize(n = n()) %>% arrange(-n)
+```python
+df = pd.read_csv("iris.csv", index_col=0)
+
+dplyr = """
+df = df %>% group_by(Species) %>% summarize_all(list(mean = mean)) %>% select(-X_mean)
 """
 
-df = pplyr(df, cmd)
+df = pplyr(df, dplyr)
 print(df)
 ```
 
 </div>
 <div class="output_area" markdown="1">
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Sepal.Length</th>
-      <th>Species</th>
-      <th>n</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>0</td>
-      <td>5.0</td>
-      <td>setosa</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>5.1</td>
-      <td>setosa</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>6.3</td>
-      <td>virginica</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>4.8</td>
-      <td>setosa</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>5.4</td>
-      <td>setosa</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>5.5</td>
-      <td>versicolor</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td>5.6</td>
-      <td>versicolor</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td>5.7</td>
-      <td>versicolor</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td>6.4</td>
-      <td>virginica</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td>9</td>
-      <td>6.7</td>
-      <td>virginica</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td>4.6</td>
-      <td>setosa</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <td>11</td>
-      <td>4.9</td>
-      <td>setosa</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <td>12</td>
-      <td>6.0</td>
-      <td>versicolor</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <td>13</td>
-      <td>6.1</td>
-      <td>versicolor</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <td>14</td>
-      <td>6.5</td>
-      <td>virginica</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <td>15</td>
-      <td>7.7</td>
-      <td>virginica</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <td>16</td>
-      <td>4.4</td>
-      <td>setosa</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>17</td>
-      <td>5.2</td>
-      <td>setosa</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>18</td>
-      <td>5.8</td>
-      <td>versicolor</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>19</td>
-      <td>5.8</td>
-      <td>virginica</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>20</td>
-      <td>6.3</td>
-      <td>versicolor</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>21</td>
-      <td>6.7</td>
-      <td>versicolor</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>22</td>
-      <td>6.9</td>
-      <td>virginica</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>23</td>
-      <td>7.2</td>
-      <td>virginica</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>24</td>
-      <td>4.7</td>
-      <td>setosa</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>25</td>
-      <td>5.0</td>
-      <td>versicolor</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>26</td>
-      <td>5.5</td>
-      <td>setosa</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>27</td>
-      <td>5.7</td>
-      <td>setosa</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>28</td>
-      <td>5.9</td>
-      <td>versicolor</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>29</td>
-      <td>6.0</td>
-      <td>virginica</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>30</td>
-      <td>6.1</td>
-      <td>virginica</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>31</td>
-      <td>6.2</td>
-      <td>versicolor</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>32</td>
-      <td>6.2</td>
-      <td>virginica</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>33</td>
-      <td>6.4</td>
-      <td>versicolor</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>34</td>
-      <td>6.6</td>
-      <td>versicolor</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>35</td>
-      <td>6.8</td>
-      <td>virginica</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <td>36</td>
-      <td>4.3</td>
-      <td>setosa</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>37</td>
-      <td>4.5</td>
-      <td>setosa</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>38</td>
-      <td>4.9</td>
-      <td>versicolor</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>39</td>
-      <td>4.9</td>
-      <td>virginica</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>40</td>
-      <td>5.1</td>
-      <td>versicolor</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>41</td>
-      <td>5.2</td>
-      <td>versicolor</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>42</td>
-      <td>5.3</td>
-      <td>setosa</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>43</td>
-      <td>5.4</td>
-      <td>versicolor</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>44</td>
-      <td>5.6</td>
-      <td>virginica</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>45</td>
-      <td>5.7</td>
-      <td>virginica</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>46</td>
-      <td>5.8</td>
-      <td>setosa</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>47</td>
-      <td>5.9</td>
-      <td>virginica</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>48</td>
-      <td>6.5</td>
-      <td>versicolor</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>49</td>
-      <td>6.8</td>
-      <td>versicolor</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>50</td>
-      <td>6.9</td>
-      <td>versicolor</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>51</td>
-      <td>7.0</td>
-      <td>versicolor</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>52</td>
-      <td>7.1</td>
-      <td>virginica</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>53</td>
-      <td>7.3</td>
-      <td>virginica</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>54</td>
-      <td>7.4</td>
-      <td>virginica</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>55</td>
-      <td>7.6</td>
-      <td>virginica</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>56</td>
-      <td>7.9</td>
-      <td>virginica</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+          Species  Sepal.Length_mean  Sepal.Width_mean  Petal.Length_mean  \
+    1      setosa              5.006             3.428              1.462   
+    2  versicolor              5.936             2.770              4.260   
+    3   virginica              6.588             2.974              5.552   
+    
+       Petal.Width_mean  
+    1             0.246  
+    2             1.326  
+    3             2.026  
 
 
 </div>

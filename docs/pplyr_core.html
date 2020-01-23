@@ -4,7 +4,7 @@ title: pplyr
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "use the R dplyr package with python"
+summary: "pplyr lets you use dplyrs grammar of data manipulation from within python without any code changes."
 ---
 <!--
 
@@ -33,10 +33,16 @@ summary: "use the R dplyr package with python"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="pplyr" class="doc_header"><code>pplyr</code><a href="https://github.com/fdewes/pplyr/tree/master/pplyr/core.py#L11" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pplyr</code>(<strong><code>df</code></strong>, <strong><code>cmd</code></strong>)</p>
+<h4 id="pplyr" class="doc_header"><code>pplyr</code><a href="https://github.com/fdewes/pplyr/tree/master/pplyr/core.py#L11" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pplyr</code>(<strong><code>df</code></strong>, <strong><code>dplyr_code</code></strong>, <strong><code>verbose</code></strong>=<em><code>False</code></em>, <strong><code>fread</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>Writes dataframe to csv, creates R script with dplyer code, calls R script and re-reads the output of the script.
-See <a href="https://github.com/fdewes/pplyer">https://github.com/fdewes/pplyer</a> for docs / examples.</p>
+<p>pplyr lets you use dplyrs grammar of data manipulation from within python without any code changes.</p>
+<p>pplyr writes a dataframe to csv, creates an R script with your dplyr code. The result is then returned as
+a pandas Dataframe.</p>
+<p>For now, the dataframe passed to R is stored as "df" within R. This might change in future versions.
+By default, pplyr uses R's read.csv() and write.csv() functions. These functions are notoriously slow.
+If you deal with larger dataframes, make sure to install the "data.tables" R package and
+pass fread = True to pplyr to speed up read/write operations.</p>
+<p>See <a href="https://fdewes.github.io/pplyr/">https://fdewes.github.io/pplyr/</a> for docs.</p>
 
 </div>
 

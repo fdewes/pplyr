@@ -8,25 +8,54 @@ import pandas as pd
 from os import system
 from tempfile import NamedTemporaryFile
 
-def pplyr(df, cmd):
+def pplyr(df, dplyr_code, verbose = False, fread = False):
     """
-    Writes dataframe to csv, creates R script with dplyer code, calls R script and re-reads the output of the script.
-    See https://github.com/fdewes/pplyer for docs / examples.
+    pplyr lets you use dplyrs grammar of data manipulation from within python without any code changes.
+
+    pplyr writes a dataframe to csv, creates an R script with your dplyr code. The result is then returned as
+    a pandas Dataframe.
+
+    For now, the dataframe passed to R is stored as "df" within R. This might change in future versions.
+    By default, pplyr uses R's read.csv() and write.csv() functions. These functions are notoriously slow.
+    If you deal with larger dataframes, make sure to install the "data.tables" R package and
+    pass fread = True to pplyr to speed up read/write operations.
+
+    See https://fdewes.github.io/pplyr/ for docs.
     """
-    data_file = NamedTemporaryFile()
-    script_file = NamedTemporaryFile()
 
-    libs = ("library(dplyr); library(data.table)")
-    load = ("df = fread('" + data_file.name + "') %>% as.data.frame()")
-    write = ("fwrite(df, '" + data_file.name + "')")
-    df.to_csv(data_file.name)
+    dpylr_data_in = NamedTemporaryFile()
+    dpylr_data_out = NamedTemporaryFile()
+    r_script_file = NamedTemporaryFile()
+    script_messages = NamedTemporaryFile()
 
-    with open(script_file.name, "w") as f:
-        f.write(libs + "\n")
-        f.write(load + "\n")
-        f.write("df = " + cmd + "\n")
-        f.write(write + "\n")
+    if(fread):
+        libs = ("suppressMessages(library(dplyr)); suppressMessages(library(data.table))")
+        load = ("df = fread('" + dpylr_data_in.name + "') %>% as.data.frame()")
+        write = ("fwrite(df, '" + dpylr_data_out.name + "')")
 
-    system("Rscript " + script_file.name)
-    df = pd.read_csv(data_file.name)
+    else:
+        libs = ("suppressMessages(library(dplyr));")
+        load = ("df = read.csv('" + dpylr_data_in.name + "') %>% as.data.frame()")
+        write = ("write.csv(df, '" + dpylr_data_out.name + "')")
+
+    df.to_csv(dpylr_data_in.name)
+
+    r_script_code = libs + "\n" + load + "\n" + dplyr_code + "\n" +write + "\n"
+
+    if(verbose):
+        print(r_script_code)
+
+    with open(r_script_file.name, "w") as f:
+        f.write(r_script_code)
+
+    r_system_call = "Rscript --no-site-file --no-init-file " + r_script_file.name + " > " + script_messages.name + " 2>&1"
+
+    system(r_system_call)
+
+    if(verbose):
+        print("R output:")
+        r_output = open(script_messages.name, "r")
+        print(r_output.read())
+
+    df = pd.read_csv(dpylr_data_out.name, index_col = 0)
     return df
