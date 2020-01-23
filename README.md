@@ -25,7 +25,7 @@ Create a dplyr command and call pplyr(df, cmd):
 
 ```python
 df = pd.read_csv("iris.csv", index_col=0)
-df
+print(df)
 ```
 
 </div>
@@ -167,7 +167,7 @@ df %>% group_by(Sepal.Length, Species) %>% summarize(n = n()) %>% arrange(-n)
 """
 
 df = pplyr(df, cmd)
-df
+print(df)
 ```
 
 </div>
