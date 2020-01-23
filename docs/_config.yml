@@ -59,4 +59,4 @@ defaults:
 sidebars:
 - home_sidebar
 
-theme: jekyll-theme-leap-day
+theme: jekyll-theme-cayman
