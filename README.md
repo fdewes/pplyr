@@ -23,7 +23,7 @@ Create a dplyr command and call pplyr(df, cmd):
 <div class="codecell" markdown="1">
 <div class="input_area" markdown="1">
 
-```python
+```
 df = pd.read_csv("iris.csv", index_col=0)
 print(df)
 ```
@@ -161,7 +161,7 @@ print(df)
 <div class="codecell" markdown="1">
 <div class="input_area" markdown="1">
 
-```python
+```
 cmd = """
 df %>% group_by(Sepal.Length, Species) %>% summarize(n = n()) %>% arrange(-n)
 """
