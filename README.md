@@ -8,48 +8,36 @@
 
 -->
 
-# Title
+# pplyr
 
-> summary
+> pplyr lets you use dplyrs grammar of data manipulation from within python without any code changes.
 
 <div class="codecell" markdown="1">
 <div class="input_area" markdown="1">
 
 ```python
-#hide
+#Hide
+
+from pplyr.core import pplyr
+import pandas as pd
 ```
 
 </div>
 
 </div>
 
-# pplyr
-
-pplyr lets you use dplyrs grammar of data manipulation from within python without any code changes.
-    
-pplyr writes a dataframe to csv, creates an R script with your dplyr code. The result is then returned as a pandas Dataframe.
-    
-For now, the dataframe passed to R is stored as "df" within R.
-
-By default, pplyr uses R's read.csv() and write.csv() functions. These functions are notoriously slow. 
-If you deal with larger dataframes, make sure to install the "data.tables" R package and 
-pass fread = True to pplyr to speed up read/write operations. 
-
-Please note that the output is slightly different, so choose wisely!
-
 ## Install
 
 `pip install pplyr`
 
 ## How to use
-
-Create a dplyr command and call pplyr(df, dplyr_code):
 <div class="codecell" markdown="1">
 <div class="input_area" markdown="1">
 
 ```python
 from pplyr.core import pplyr
 import pandas as pd
+
 df = pd.read_csv("iris.csv", index_col=0)
 
 dplyr = """
@@ -59,7 +47,70 @@ df = df %>% group_by(Species) %>% summarize_all(list(mean = mean)) %>% select(-X
 """
 
 df = pplyr(df, dplyr)
+df
 ```
+
+</div>
+<div class="output_area" markdown="1">
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Species</th>
+      <th>Sepal.Length_mean</th>
+      <th>Sepal.Width_mean</th>
+      <th>Petal.Length_mean</th>
+      <th>Petal.Width_mean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>setosa</td>
+      <td>5.006</td>
+      <td>3.428</td>
+      <td>1.462</td>
+      <td>0.246</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>versicolor</td>
+      <td>5.936</td>
+      <td>2.770</td>
+      <td>4.260</td>
+      <td>1.326</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>virginica</td>
+      <td>6.588</td>
+      <td>2.974</td>
+      <td>5.552</td>
+      <td>2.026</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 </div>
 
