@@ -12,19 +12,6 @@
 
 > pplyr lets you use dplyrs grammar of data manipulation from within python without any code changes.
 
-<div class="codecell" markdown="1">
-<div class="input_area" markdown="1">
-
-```python
-#Hide
-
-from pplyr.core import pplyr
-import pandas as pd
-```
-
-</div>
-
-</div>
 
 ## Install
 
@@ -46,8 +33,7 @@ df = df %>% group_by(Species) %>% summarize_all(list(mean = mean)) %>% select(-X
 
 """
 
-df = pplyr(df, dplyr)
-df
+pplyr(df, dplyr)
 ```
 
 </div>
