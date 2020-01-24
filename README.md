@@ -12,6 +12,16 @@
 
 > pplyr lets you use dplyrs grammar of data manipulation from within python without any code changes.
 
+<div class="codecell" markdown="1">
+<div class="input_area" markdown="1">
+
+```python
+#hide
+```
+
+</div>
+
+</div>
 
 ## Install
 
@@ -24,27 +34,147 @@ Create a dplyr command and call pplyr(df, dplyr_code):
 <div class="input_area" markdown="1">
 
 ```python
+from pplyr.core import pplyr
+import pandas as pd
+
 df = pd.read_csv("iris.csv", index_col=0)
-print(df)
+```
+
+</div>
+
+</div>
+<div class="codecell" markdown="1">
+<div class="input_area" markdown="1">
+
+```python
+df
 ```
 
 </div>
 <div class="output_area" markdown="1">
 
-         Sepal.Length  Sepal.Width  Petal.Length  Petal.Width    Species
-    1             5.1          3.5           1.4          0.2     setosa
-    2             4.9          3.0           1.4          0.2     setosa
-    3             4.7          3.2           1.3          0.2     setosa
-    4             4.6          3.1           1.5          0.2     setosa
-    5             5.0          3.6           1.4          0.2     setosa
-    ..            ...          ...           ...          ...        ...
-    146           6.7          3.0           5.2          2.3  virginica
-    147           6.3          2.5           5.0          1.9  virginica
-    148           6.5          3.0           5.2          2.0  virginica
-    149           6.2          3.4           5.4          2.3  virginica
-    150           5.9          3.0           5.1          1.8  virginica
-    
-    [150 rows x 5 columns]
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Sepal.Length</th>
+      <th>Sepal.Width</th>
+      <th>Petal.Length</th>
+      <th>Petal.Width</th>
+      <th>Species</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>4.9</td>
+      <td>3.0</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>4.7</td>
+      <td>3.2</td>
+      <td>1.3</td>
+      <td>0.2</td>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>4.6</td>
+      <td>3.1</td>
+      <td>1.5</td>
+      <td>0.2</td>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>5.0</td>
+      <td>3.6</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <td>146</td>
+      <td>6.7</td>
+      <td>3.0</td>
+      <td>5.2</td>
+      <td>2.3</td>
+      <td>virginica</td>
+    </tr>
+    <tr>
+      <td>147</td>
+      <td>6.3</td>
+      <td>2.5</td>
+      <td>5.0</td>
+      <td>1.9</td>
+      <td>virginica</td>
+    </tr>
+    <tr>
+      <td>148</td>
+      <td>6.5</td>
+      <td>3.0</td>
+      <td>5.2</td>
+      <td>2.0</td>
+      <td>virginica</td>
+    </tr>
+    <tr>
+      <td>149</td>
+      <td>6.2</td>
+      <td>3.4</td>
+      <td>5.4</td>
+      <td>2.3</td>
+      <td>virginica</td>
+    </tr>
+    <tr>
+      <td>150</td>
+      <td>5.9</td>
+      <td>3.0</td>
+      <td>5.1</td>
+      <td>1.8</td>
+      <td>virginica</td>
+    </tr>
+  </tbody>
+</table>
+<p>150 rows × 5 columns</p>
+</div>
+
 
 
 </div>
@@ -57,25 +187,84 @@ print(df)
 df = pd.read_csv("iris.csv", index_col=0)
 
 dplyr = """
+
 df = df %>% group_by(Species) %>% summarize_all(list(mean = mean)) %>% select(-X_mean)
+
 """
 
 df = pplyr(df, dplyr)
-print(df)
+```
+
+</div>
+
+</div>
+<div class="codecell" markdown="1">
+<div class="input_area" markdown="1">
+
+```python
+df
 ```
 
 </div>
 <div class="output_area" markdown="1">
 
-          Species  Sepal.Length_mean  Sepal.Width_mean  Petal.Length_mean  \
-    1      setosa              5.006             3.428              1.462   
-    2  versicolor              5.936             2.770              4.260   
-    3   virginica              6.588             2.974              5.552   
-    
-       Petal.Width_mean  
-    1             0.246  
-    2             1.326  
-    3             2.026  
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Species</th>
+      <th>Sepal.Length_mean</th>
+      <th>Sepal.Width_mean</th>
+      <th>Petal.Length_mean</th>
+      <th>Petal.Width_mean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>setosa</td>
+      <td>5.006</td>
+      <td>3.428</td>
+      <td>1.462</td>
+      <td>0.246</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>versicolor</td>
+      <td>5.936</td>
+      <td>2.770</td>
+      <td>4.260</td>
+      <td>1.326</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>virginica</td>
+      <td>6.588</td>
+      <td>2.974</td>
+      <td>5.552</td>
+      <td>2.026</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 
 
 </div>

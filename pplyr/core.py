@@ -18,7 +18,8 @@ def pplyr(df, dplyr_code, verbose = False, fread = False):
     For now, the dataframe passed to R is stored as "df" within R. This might change in future versions.
     By default, pplyr uses R's read.csv() and write.csv() functions. These functions are notoriously slow.
     If you deal with larger dataframes, make sure to install the "data.tables" R package and
-    pass fread = True to pplyr to speed up read/write operations.
+    pass fread = True to pplyr to speed up read/write operations. Please note that the output is slightly different
+    for fread/fwrite and read.csv/write.csv.
 
     See https://fdewes.github.io/pplyr/ for docs.
     """
