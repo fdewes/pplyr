@@ -8,9 +8,9 @@
 
 -->
 
-# pplyr
+# Title
 
-> pplyr lets you use dplyrs grammar of data manipulation from within python without any code changes.
+> summary
 
 <div class="codecell" markdown="1">
 <div class="input_area" markdown="1">
@@ -22,6 +22,20 @@
 </div>
 
 </div>
+
+# pplyr
+
+pplyr lets you use dplyrs grammar of data manipulation from within python without any code changes.
+    
+pplyr writes a dataframe to csv, creates an R script with your dplyr code. The result is then returned as a pandas Dataframe.
+    
+For now, the dataframe passed to R is stored as "df" within R.
+
+By default, pplyr uses R's read.csv() and write.csv() functions. These functions are notoriously slow. 
+If you deal with larger dataframes, make sure to install the "data.tables" R package and 
+pass fread = True to pplyr to speed up read/write operations. 
+
+Please note that the output is slightly different, so choose wisely!
 
 ## Install
 
@@ -36,154 +50,6 @@ Create a dplyr command and call pplyr(df, dplyr_code):
 ```python
 from pplyr.core import pplyr
 import pandas as pd
-
-df = pd.read_csv("iris.csv", index_col=0)
-```
-
-</div>
-
-</div>
-<div class="codecell" markdown="1">
-<div class="input_area" markdown="1">
-
-```python
-df
-```
-
-</div>
-<div class="output_area" markdown="1">
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Sepal.Length</th>
-      <th>Sepal.Width</th>
-      <th>Petal.Length</th>
-      <th>Petal.Width</th>
-      <th>Species</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>5.1</td>
-      <td>3.5</td>
-      <td>1.4</td>
-      <td>0.2</td>
-      <td>setosa</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>4.9</td>
-      <td>3.0</td>
-      <td>1.4</td>
-      <td>0.2</td>
-      <td>setosa</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>4.7</td>
-      <td>3.2</td>
-      <td>1.3</td>
-      <td>0.2</td>
-      <td>setosa</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>4.6</td>
-      <td>3.1</td>
-      <td>1.5</td>
-      <td>0.2</td>
-      <td>setosa</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>5.0</td>
-      <td>3.6</td>
-      <td>1.4</td>
-      <td>0.2</td>
-      <td>setosa</td>
-    </tr>
-    <tr>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <td>146</td>
-      <td>6.7</td>
-      <td>3.0</td>
-      <td>5.2</td>
-      <td>2.3</td>
-      <td>virginica</td>
-    </tr>
-    <tr>
-      <td>147</td>
-      <td>6.3</td>
-      <td>2.5</td>
-      <td>5.0</td>
-      <td>1.9</td>
-      <td>virginica</td>
-    </tr>
-    <tr>
-      <td>148</td>
-      <td>6.5</td>
-      <td>3.0</td>
-      <td>5.2</td>
-      <td>2.0</td>
-      <td>virginica</td>
-    </tr>
-    <tr>
-      <td>149</td>
-      <td>6.2</td>
-      <td>3.4</td>
-      <td>5.4</td>
-      <td>2.3</td>
-      <td>virginica</td>
-    </tr>
-    <tr>
-      <td>150</td>
-      <td>5.9</td>
-      <td>3.0</td>
-      <td>5.1</td>
-      <td>1.8</td>
-      <td>virginica</td>
-    </tr>
-  </tbody>
-</table>
-<p>150 rows × 5 columns</p>
-</div>
-
-
-
-</div>
-
-</div>
-<div class="codecell" markdown="1">
-<div class="input_area" markdown="1">
-
-```python
 df = pd.read_csv("iris.csv", index_col=0)
 
 dplyr = """
@@ -194,78 +60,6 @@ df = df %>% group_by(Species) %>% summarize_all(list(mean = mean)) %>% select(-X
 
 df = pplyr(df, dplyr)
 ```
-
-</div>
-
-</div>
-<div class="codecell" markdown="1">
-<div class="input_area" markdown="1">
-
-```python
-df
-```
-
-</div>
-<div class="output_area" markdown="1">
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Species</th>
-      <th>Sepal.Length_mean</th>
-      <th>Sepal.Width_mean</th>
-      <th>Petal.Length_mean</th>
-      <th>Petal.Width_mean</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>setosa</td>
-      <td>5.006</td>
-      <td>3.428</td>
-      <td>1.462</td>
-      <td>0.246</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>versicolor</td>
-      <td>5.936</td>
-      <td>2.770</td>
-      <td>4.260</td>
-      <td>1.326</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>virginica</td>
-      <td>6.588</td>
-      <td>2.974</td>
-      <td>5.552</td>
-      <td>2.026</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
 
 </div>
 
